@@ -55,9 +55,29 @@ const deleteGroup = (id, type) => {
   });
 };
 
+const reNameGroup = (id, name, type) => {
+  return new Promise((resolve, reject) => {
+    Group
+    .findOne( {name})
+    .exec((error, result) => {
+      if (error) {console.log(error);}
+      else if (result) {reject({alreadyExists: true})}
+      else {
+        Group
+        .update({ _id: id, type }, { name })
+        .exec(error => {
+          if (error) { console.log(error); reject({renamed: false}); }
+          else resolve({renamed: true})
+        });
+      }
+    });
+  });
+};
+
 module.exports = {
   getAllGroupsByType,
   createGroup,
   getAllGroups,
   deleteGroup,
+  reNameGroup,
 }
