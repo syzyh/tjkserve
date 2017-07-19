@@ -1,0 +1,2 @@
+const Media = require('./model');
+

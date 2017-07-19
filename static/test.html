@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="x-rim-auto-match" content="none">
+    <meta id="metaDescription" name="description" content="test for daiye">
+
+    <script>
+        document.documentElement.setAttribute('data-useragent', navigator.userAgent);
+    </script>
+
+    <title>test</title>
+
+    <link rel="stylesheet" href="http://stc.xiumius.com/styles/app/reader/b0e430.paper.min.css">
+
+    <script id="__pre_data">
+        window.injectedData          = window.injectedData || {};
+        injectedData.SYSTEM_SETTINGS = {"templateRootPath":"//sd.xiumius.com/tpls","addGAForShow":2};
+        injectedData.showInfo        = {"show_id":48880665,"type":2,"version":5,"title":"test","desc":"test%20for%20daiye","cover":"http://img.xiumi.us/xmi/ua/adNY/i/3029aae125d3007c2c728f4685f36335-sz_1762437.JPG?x-oss-process=style/xm","loading_icon":null,"show_data_name":"adNY/0df840376fbc6dcceaafb05ded7ac5d3","show_data_url":"//sd.xiumius.com/xmi/pd/adNY/0df840376fbc6dcceaafb05ded7ac5d3.json?_ver=1499061283000","show_url":"http://v.xiumi.us/board/v5/27dMz/48880665","no_logo":0,"no_advert":0,"freeshow":0,"traffic":2482397,"points":266,"history_hits":6,"cur_hits":29,"hit_count":35,"high_peak":50000,"created_at":"2017-07-03T05:47:56.000Z","updated_at":"2017-07-03T05:54:44.000Z","owner":{"nickname":"大家都不造我谁","avatar_url":"http://tva4.sinaimg.cn/crop.0.0.511.511.50/4891e79djw8elft7xfuvgj20e70e874w.jpg","brand_name":null,"agreement_access":1,"level":3,"level_remain_life":0}};
+        injectedData.wxSign          = {"appId":"wxf0166ffbefb1f760","timestamp":1499075946,"nonceStr":"sQQMkEiQqKEOLwyZ","signature":"0c944609360f7bd179ac5e682f7f5e724ef634ff"};
+        injectedData.advertList      = [];
+    </script>
+
+    <script id="__delete_pre_data">
+    var __pre_data = document.getElementById('__pre_data');
+    if (!!__pre_data) {
+        __pre_data.parentNode.removeChild(__pre_data);
+    }
+    var __pre_connect = document.getElementById('__pre_connect');
+    if (!!__pre_connect) {
+        __pre_connect.parentNode.removeChild(__pre_connect);
+    }
+    var __delete_pre_data = document.getElementById('__delete_pre_data');
+    if (!!__delete_pre_data) {
+        __delete_pre_data.parentNode.removeChild(__delete_pre_data);
+    }
+</script>
+</head>
+<body class="tn-transition-end tn-platform-class">
+
+<div id="shareImage" style="display: none;">
+    <img src="http://img.xiumi.us/xmi/ua/adNY/i/3029aae125d3007c2c728f4685f36335-sz_1762437.JPG?x-oss-process=style/xm">
+</div>
+
+<div class="tn-reader-paper container" ng-controller="PaperReaderController"
+     tn-scroll-touch="onPaperScroll($event)" tn-scroll-touch-for="document">
+
+    <section class="row tn-board-head" ng-show="displaySystemTitle" ng-cloak>
+        <h3 ng-bind="showInfo.title || '无标题'"></h3>
+        <div class="tn-head-info">
+            <span class="time" ng-bind="showInfo.created_at | date:'yyyy-M-d'"></span>
+            <span class="hor-sep"></span>
+            <span class="brand" ng-bind="showInfo.owner.brand_name"></span>
+        </div>
+
+        <hr/>
+    </section>
+
+    <section class="row tn-board-head-space" ng-show="!displaySystemTitle"></section>
+
+    <div class="loading-progress" ng-show="!isReady">
+        <span class="item"></span>
+        <span class="item"></span>
+        <span class="item"></span>
+    </div>
+
+    <section class="row tn-article-body" ng-show="isReady" tn-opera-house
+             tn-atom-context="{ type: 'paper', inReader: true, animationEnabled: false }">
+        <article class="dock-loader tn-scene-paper tn-show-root"
+                 tn-solo-comp-loader="cubes[0]"
+                 tn-bind-comp-tpl-id="reader_paper-cp:sys/loader-flow-paper"
+                 tn-comp-role="root"
+                 ng-show="!htmlForPreview" ng-cloak>
+        </article>
+        <div class="dock-loader tn-scene-paper tn-show-root"
+             tn-renderer-accelerate="htmlForPreview"
+             ng-bind-html="htmlForPreview | unsafe"
+             ng-show="!!htmlForPreview" ng-cloak>
+        </div>
+    </section>
+
+    <section class="row tn-board-foot" ng-show="isReady" ng-cloak>
+        <hr/>
+
+        <div class="col-xs-3 text-left no-padding" ng-cloak>
+            阅读 <span ng-bind="hitCount | hitCountText"></span>
+        </div>
+        <div class="col-xs-6 text-center no-padding" ng-cloak>
+            <a class="no-decoration" ng-if="showLogo">
+                由秀米提供技术支持
+            </a>
+        </div>
+        <div class="col-xs-3 text-right no-padding" ng-cloak>
+            <a class="report-button" ng-href="/report/{{showInfo.show_id}}">
+                举报
+            </a>
+        </div>
+    </section>
+
+    <a ng-href="{{ advertItem.target_uri }}" target="_blank">
+        <section class="row tn-board-advert" ng-show="isReady && showAdvert" ng-cloak>
+            <div class="col-xs-12 text-center">
+                <div class="prompt">广告</div>
+            </div>
+            <div class="col-xs-12">
+                <img class="advert-image" ng-src="{{ advertItem.thumb_uri }}">
+            </div>
+        </section>
+    </a>
+
+</div>
+
+<!--<section class="tn-scripts tn-last-block">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+    <script src="http://stc.xiumius.com/views/app/reader/22b0eb.ng-tpl.min.js"></script>
+
+    <script type="text/javascript" src="http://stc.xiumius.com/template/v5/paper/comp/ng-tpl.js?host=a.xiumi.us&_ver=1498659926250"></script>
+
+    <script src="http://stc.xiumius.com/scripts/app/reader/entries/paper/45d5a6.main.min.js"></script>
+
+</section>-->
+
+</body>
+</html>
