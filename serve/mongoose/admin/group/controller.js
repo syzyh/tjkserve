@@ -44,7 +44,7 @@ const createGroup = (name, type) => {
   });
 };
 
-const deleteGroup = (id, type) => {
+const deleteGroup = id => {
   return new Promise((resolve, reject) => {
     Group
     .remove({ _id: id })
@@ -55,16 +55,16 @@ const deleteGroup = (id, type) => {
   });
 };
 
-const reNameGroup = (id, name, type) => {
+const reNameGroup = (id, name) => {
   return new Promise((resolve, reject) => {
     Group
-    .findOne( {name})
+    .findOne({name})
     .exec((error, result) => {
       if (error) {console.log(error);}
       else if (result) {reject({alreadyExists: true})}
       else {
         Group
-        .update({ _id: id, type }, { name })
+        .update({ _id: id }, { name })
         .exec(error => {
           if (error) { console.log(error); reject({renamed: false}); }
           else resolve({renamed: true})

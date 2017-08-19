@@ -16,7 +16,7 @@ const groupAPI = (app) => {
   });
 
   app.post('/api/group', (req, res) => {
-    const { name, type  } = req.body;
+    const { name, type } = req.body;
     createGroup(name, type).then(
       result => { res.send(result); },
       error => {  res.send(error); }
@@ -34,9 +34,9 @@ const groupAPI = (app) => {
   });
 
   app.put('/api/group', (req, res) => {
-    const { id, name, type } = req.body;
-    if (name && id && type) {
-      reNameGroup(id, name, type).then(
+    const { id, name } = req.body;
+    if (name && id) {
+      reNameGroup(id, name).then(
         result => res.send(result),
         error => res.send(error)
       );

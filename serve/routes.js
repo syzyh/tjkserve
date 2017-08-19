@@ -7,18 +7,26 @@ const groupAPI = require('./mongoose/admin/group/api');
 
 const routesConfig = (app) => {
   const publicPath = path.resolve(__dirname, '../public');
-  app.use(express.static(publicPath));
+  app.use('/public', express.static(publicPath));
 
   app.get('/api', (req, res) => {
     res.send('hello from api endpoint');
   });
 
-  // mediaAPI(app);
+  mediaAPI(app);
+  
   groupAPI(app);
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../public', 'index.html'))
+  app.get('/admin', (req, res) => {
+    console.log('admin');
+    res.set('Content-Type', 'text/html');
+    res.sendFile(path.resolve(__dirname, '../public', 'index.html'), {headers: {'Content-Type':'text/html'}})
+  });
+
+  app.get('/test', (req, res) => {
+    console.log('test')
+    res.sendFile(path.resolve(__dirname, '../public/uploads/test.mp3'))
   });
 };
 
-module.exports = routesConfig;
+module.exports = routesConfig

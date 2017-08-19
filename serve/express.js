@@ -5,12 +5,15 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const mongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');
+const skipper = require('skipper')();
 
 const expressConfig = (app, serverConfigs) => {
   app.use(compress());
 
   app.use(morgan('dev'));
 
+  app.use(skipper);
+  
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
