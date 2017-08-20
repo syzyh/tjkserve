@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="前端," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="简介：TypeScript是一种由微软开发的自由和开源的编程语言。它是JavaScript的一个超集，而且本质上向这个语言添加了可选的静态类型和基于类的面向对象编程。在前端大型项目管理中可以使用Typescript进行类型管理。目前Angular全面支持Typescript，React和Vue也可以自定义添加Typescript。 基础类型boolean、number、string基础类型1let">
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="typescript笔记">
+<meta property="og:url" content="http://yoursite.com/2017/08/20/typescript笔记/index.html">
+<meta property="og:site_name" content="戴也的博客">
+<meta property="og:description" content="简介：TypeScript是一种由微软开发的自由和开源的编程语言。它是JavaScript的一个超集，而且本质上向这个语言添加了可选的静态类型和基于类的面向对象编程。在前端大型项目管理中可以使用Typescript进行类型管理。目前Angular全面支持Typescript，React和Vue也可以自定义添加Typescript。 基础类型boolean、number、string基础类型1let">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-20T08:43:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="typescript笔记">
+<meta name="twitter:description" content="简介：TypeScript是一种由微软开发的自由和开源的编程语言。它是JavaScript的一个超集，而且本质上向这个语言添加了可选的静态类型和基于类的面向对象编程。在前端大型项目管理中可以使用Typescript进行类型管理。目前Angular全面支持Typescript，React和Vue也可以自定义添加Typescript。 基础类型boolean、number、string基础类型1let">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/20/typescript笔记/"/>
+
+
+
+
+
+  <title>typescript笔记 | 戴也的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">戴也的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/20/typescript笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="戴也">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="戴也的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">typescript笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-20T10:10:42+08:00">
+                2017-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>简介：TypeScript是一种由微软开发的自由和开源的编程语言。它是JavaScript的一个超集，而且本质上向这个语言添加了可选的静态类型和基于类的面向对象编程。在前端大型项目管理中可以使用Typescript进行类型管理。目前Angular全面支持Typescript，React和Vue也可以自定义添加Typescript。</p>
+<h2 id="基础类型"><a href="#基础类型" class="headerlink" title="基础类型"></a>基础类型</h2><h3 id="boolean、number、string基础类型"><a href="#boolean、number、string基础类型" class="headerlink" title="boolean、number、string基础类型"></a>boolean、number、string基础类型</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a: boolen = <span class="literal">false</span>; <span class="keyword">let</span> b: <span class="built_in">number</span> = <span class="number">5</span>;</div></pre></td></tr></table></figure>
+<h3 id="数组、元组、枚举"><a href="#数组、元组、枚举" class="headerlink" title="数组、元组、枚举"></a>数组、元组、枚举</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> list: <span class="built_in">number</span>[] = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>]; <span class="keyword">let</span> list: <span class="built_in">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>];</div><div class="line"><span class="keyword">let</span> x:[<span class="built_in">string</span>, <span class="built_in">number</span>] = [<span class="string">'hello'</span>, <span class="number">10</span>];<span class="comment">//越界值x[3]的类型为(string | number)</span></div><div class="line"><span class="keyword">enum</span> Color &#123;Red = <span class="number">1</span>, Green, Blue&#125;; <span class="keyword">let</span> c: Color = Color.Red;</div><div class="line"><span class="keyword">let</span> colorName: <span class="built_in">string</span> = Color[<span class="number">3</span>];</div></pre></td></tr></table></figure>
+<h3 id="Any、Void、Null、Undefined、Never"><a href="#Any、Void、Null、Undefined、Never" class="headerlink" title="Any、Void、Null、Undefined、Never"></a>Any、Void、Null、Undefined、Never</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> notSure: <span class="built_in">any</span> = <span class="number">4</span>; <span class="keyword">let</span> prettySure: <span class="built_in">Object</span> = <span class="number">4</span>;</div><div class="line">notSure.toFixed();<span class="comment">//Object类型只能赋予任意值，及其含有的方法，而any类型可以调用任意方法</span></div><div class="line"><span class="keyword">let</span> list: <span class="built_in">any</span>[] = [<span class="number">1</span>, <span class="literal">true</span>, <span class="string">"free"</span>];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">warn</span>(<span class="params"></span>): <span class="title">Void</span> </span>&#123;&#125; </div><div class="line"><span class="keyword">let</span> unusable: <span class="built_in">void</span> = <span class="literal">undefined</span>;<span class="comment">//只有无返回值、null和undefined可以是Void类型</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> n: <span class="literal">null</span> = <span class="literal">null</span>; <span class="keyword">let</span> a: <span class="built_in">number</span> = <span class="literal">null</span>;<span class="comment">//null和undefined是所有类型的子类型，可赋值给任意类型</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">error</span>(<span class="params"></span>) :<span class="title">never</span> </span>&#123;&#125;<span class="comment">//never类型表示那些永远不存在的类型，及时any也不可以赋值给never</span></div></pre></td></tr></table></figure>
+<h3 id="类型断言"><a href="#类型断言" class="headerlink" title="类型断言"></a>类型断言</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> someValue: <span class="built_in">any</span> = <span class="string">"sdfsa"</span>;</div><div class="line"><span class="keyword">let</span> strLength: <span class="built_in">number</span> = (&lt;<span class="built_in">string</span>&gt;someValue).length = (someValue <span class="keyword">as</span> <span class="built_in">string</span>).length;</div></pre></td></tr></table></figure>
+<h3 id="数组解构"><a href="#数组解构" class="headerlink" title="数组解构"></a>数组解构</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> [first, second] = [<span class="number">1</span>,<span class="number">2</span>]; [first, second] = [second, first];</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">[first, second]: [<span class="built_in">number</span>, <span class="built_in">number</span>]</span>) </span>&#123;&#125;</div><div class="line">f([<span class="number">1</span>,<span class="number">3</span>]);</div><div class="line"><span class="keyword">let</span> [first, ... rest] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];<span class="comment">//rest[2,3,4]</span></div><div class="line"><span class="keyword">let</span> [, second, , fourth] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</div></pre></td></tr></table></figure>
+<h3 id="对象解构"><a href="#对象解构" class="headerlink" title="对象解构"></a>对象解构</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> o = &#123; a: <span class="string">"foo"</span>, b: <span class="number">12</span>, c: <span class="string">"bar"</span> &#125;; <span class="keyword">let</span> &#123; a, b &#125; = o;</div><div class="line">(&#123; a, b = <span class="number">1001</span> &#125; = &#123;a: <span class="string">"baz"</span>, b: <span class="number">101</span>&#125;);<span class="comment">//可以添加默认值</span></div><div class="line"><span class="keyword">let</span> &#123; a, ...rest &#125; = o;</div><div class="line"><span class="keyword">let</span> &#123; a: newName1, b: newName2 &#125; = o;<span class="comment">//newName是新创建的变量而不是类型，类型见下</span></div><div class="line"><span class="keyword">let</span> &#123;a, b&#125;: &#123;a: <span class="built_in">string</span>, b: <span class="built_in">number</span>&#125; = o;</div><div class="line">function f(&#123; a, b &#125; = &#123; a: "", b: 0 &#125;): void &#123;&#125;</div><div class="line"><span class="keyword">let</span> O = &#123; b: <span class="number">10</span>, ...o &#125;; <span class="keyword">let</span> O2 = &#123; ...o, b: <span class="number">10</span> &#125;<span class="comment">///展开是从左往右一词覆盖</span></div></pre></td></tr></table></figure>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>): <span class="title">number</span> </span>&#123; <span class="keyword">return</span> x + y; &#125;</div><div class="line"><span class="keyword">let</span> add1 = <span class="function"><span class="keyword">function</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>): <span class="title">number</span> </span>&#123;<span class="keyword">return</span> x+Y;&#125;</div><div class="line"><span class="keyword">let</span> add2: <span class="function">(<span class="params">x:<span class="built_in">number</span>, y:<span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span> =</div><div class="line">  <span class="function"><span class="keyword">function</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>): <span class="title">number</span> </span>&#123; <span class="keyword">return</span> x+y; &#125;</div><div class="line"><span class="keyword">let</span> add2: <span class="function">(<span class="params">baseValue:<span class="built_in">number</span>, increment:<span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span> =</div><div class="line">  <span class="function"><span class="keyword">function</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>): <span class="title">number</span> </span>&#123; <span class="keyword">return</span> x+y; &#125;</div></pre></td></tr></table></figure>
+<h3 id="可选参数和默认参数"><a href="#可选参数和默认参数" class="headerlink" title="可选参数和默认参数"></a>可选参数和默认参数</h3><p>每个函数参数都是必须的，个数必须与期望的个数一致，不能多也不能少，除非使用可选参数或默认值</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">build</span>(<span class="params">first: <span class="built_in">string</span>, last?: <span class="built_in">string</span></span>) </span>&#123;&#125;</div><div class="line">function build(first: string, last = "Simth") &#123;&#125;//函数类型也是可选</div><div class="line">function build(first = "Will", last: string) &#123;&#125;</div><div class="line">build(<span class="literal">undefined</span>, <span class="string">"Adams"</span>)<span class="comment">//如果默认参数在前面，需要明确传入undefined获取默认值</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">build</span>(<span class="params">first: <span class="built_in">string</span>, ...rest: <span class="built_in">string</span>[]</span>) </span>&#123;&#125;</div></pre></td></tr></table></figure>
+<h3 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">pickCard</span>(<span class="params">x: <span class="built_in">number</span></span>): </span>&#123;suit: <span class="built_in">string</span>; card: <span class="built_in">number</span>;&#125;;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">pickCard</span>(<span class="params">x: <span class="built_in">string</span></span>): <span class="title">number</span></span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">pickCard</span>(<span class="params">x</span>): <span class="title">any</span> </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> x == <span class="string">"object"</span>) &#123;&#125;</div><div class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> x == <span class="string">"number"</span>) &#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Animal &#123;</div><div class="line">  name: <span class="built_in">string</span>;</div><div class="line">  <span class="keyword">constructor</span>(<span class="params">theName: <span class="built_in">string</span></span>) &#123; <span class="keyword">this</span>.name = theName &#125;</div><div class="line">  move(distanceInMeters: <span class="built_in">number</span> = <span class="number">0</span>) &#123;&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> Snake <span class="keyword">extends</span> Animal &#123;</div><div class="line">  <span class="keyword">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123; <span class="keyword">super</span>(name) &#125;</div><div class="line">  move(distanceInMeters = <span class="number">5</span>) &#123;</div><div class="line">    <span class="keyword">super</span>.move(distanceInMeters);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> sam = <span class="keyword">new</span> Snake(<span class="string">"test"</span>);</div></pre></td></tr></table></figure>
+<p>构造函数中添加参数属性，会将参数自动添加为属性</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Animal &#123;</div><div class="line">  readonly numberOfLegs: <span class="built_in">number</span> = <span class="number">8</span>;<span class="comment">//readonly属性必须在声明时或构造函数中初始化</span></div><div class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> name: <span class="built_in">string</span></span>) &#123;&#125;</div><div class="line">  move(distancInMeters: <span class="built_in">number</span>) &#123;<span class="built_in">console</span>.log(<span class="keyword">this</span>.name)&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3><p>可将类属性改成使用get和set</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> passcode = <span class="string">"secret passcode"</span>;</div><div class="line"><span class="keyword">class</span> Employee &#123;</div><div class="line">  <span class="keyword">private</span> _fullName: <span class="built_in">string</span>;</div><div class="line">  <span class="keyword">get</span> fullName(): <span class="built_in">string</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._fullName;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">set</span> fullName(newName: <span class="built_in">string</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (passcode == <span class="string">"secret passcode"</span>)&#123;</div><div class="line">      <span class="keyword">this</span>._fullName = newName;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;<span class="built_in">console</span>.log(<span class="string">"Error"</span>);&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> employee = <span class="keyword">new</span> Employee();</div><div class="line">employee.fullName = <span class="string">"Smith"</span>;</div></pre></td></tr></table></figure>
+<h3 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h3><p>静态属性属于类本事而不是实例上，使用时加上<code>Grid</code>类名（就像在实例属性上使用<code>this.</code>前缀访问属性一样）</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Grid &#123;</div><div class="line">  <span class="keyword">static</span> origin = &#123;x: <span class="number">0</span>, y: <span class="number">0</span>&#125;;</div><div class="line">  calculateDistance(point: &#123;x: <span class="built_in">number</span>; y: <span class="built_in">number</span>&#125;) &#123;</div><div class="line">    <span class="keyword">let</span> xDist = (point.x - Grid.origin.x);</div><div class="line">    <span class="keyword">let</span> yDist = (point.y - Grid.origin.y);</div><div class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.sqrt(xDist + yDist) / <span class="keyword">this</span>.scale;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">constructor</span> (<span class="params"><span class="keyword">public</span> scale: <span class="built_in">number</span></span>) &#123; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h3><p>抽象类作为其它派生类的基类使用，不能直接被实例化。相比于接口，抽象类可以包含成员的实现细节。<code>abstract</code>关键字是用于定义抽象类和抽象类内部定义抽象方法。</p>
+<p>抽象方法不包含具体实现，必须在派生类中实现。抽象方法可以包含修饰符号。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> Department &#123;</div><div class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> name: <span class="built_in">string</span></span>) &#123;&#125;</div><div class="line">  printName(): <span class="built_in">void</span> &#123; <span class="built_in">console</span>.log(<span class="keyword">this</span>.name); &#125;</div><div class="line">  <span class="keyword">abstract</span> printMeeting(): <span class="built_in">void</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> AcountDepartment <span class="keyword">extends</span> Department &#123;</div><div class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123; <span class="keyword">super</span>(<span class="string">'Acounting'</span>); &#125;</div><div class="line">  printMeeting(): <span class="built_in">void</span> &#123;<span class="built_in">console</span>.log(<span class="string">'printMeeting'</span>)&#125;</div><div class="line">  greet(): <span class="built_in">void</span> &#123; <span class="built_in">console</span>.log(<span class="string">'greet'</span>); &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> department: Department;</div><div class="line">department = <span class="keyword">new</span> Department();<span class="comment">//error</span></div><div class="line">department = <span class="keyword">new</span> AccountDepartment();</div><div class="line">department.printName(); department.printMeeting();</div><div class="line">department.greet();<span class="comment">//error</span></div></pre></td></tr></table></figure>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><p>类型检查器</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">printLabel</span>(<span class="params">labelObj: &#123; label: <span class="built_in">string</span> &#125;</span>) </span>&#123;&#125;</div><div class="line"><span class="keyword">interface</span> LabelledValue &#123; label: <span class="built_in">string</span>; &#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">printLabel</span>(<span class="params">labeObj: LabelledValue</span>) </span>&#123;&#125;</div><div class="line"><span class="comment">//拥有可选属性的接口里，如果一个对象字面量存在接口不包含的属性时，会报错</span></div><div class="line"><span class="keyword">interface</span> Point &#123; x?: <span class="built_in">number</span>; readonly y: <span class="built_in">number</span> &#125;</div><div class="line"><span class="keyword">interface</span> Config &#123;color? <span class="built_in">string</span>; [propName: <span class="built_in">string</span>]: <span class="built_in">any</span>;&#125;<span class="comment">//可以避免报错</span></div><div class="line"><span class="keyword">let</span> a: ReadonlyArray&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>];<span class="comment">//变量使用const，属性使用readonly</span></div></pre></td></tr></table></figure>
+<h3 id="额外的属性检查"><a href="#额外的属性检查" class="headerlink" title="额外的属性检查"></a>额外的属性检查</h3><p>拥有可选属性的接口里，如果一个对象字面量赋值给变量或作为参数传递时，若存在接口不包含的属性，会报错</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">interface</span> Config &#123;color? <span class="built_in">string</span>; [propName: <span class="built_in">string</span>]: <span class="built_in">any</span>;&#125;<span class="comment">//可以添加字符串索引</span></div><div class="line">createConfig(&#123;color: <span class="string">'red'</span>, opacity: <span class="number">0.5</span>&#125; <span class="keyword">as</span> Config);<span class="comment">//类型转换也可以</span></div><div class="line"><span class="comment">//或者把对象字面量赋值给无类型变量，再传参数也可以避免报错</span></div><div class="line"><span class="keyword">let</span> a = &#123;color: <span class="string">'red'</span>, opacity: <span class="number">0.5</span>&#125;;</div><div class="line">createConfig(a);</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag"># 前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/20/numpy笔记/" rel="next" title="numpy笔记">
+                <i class="fa fa-chevron-left"></i> numpy笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="戴也" />
+          <p class="site-author-name" itemprop="name">戴也</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础类型"><span class="nav-number">1.</span> <span class="nav-text">基础类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#boolean、number、string基础类型"><span class="nav-number">1.1.</span> <span class="nav-text">boolean、number、string基础类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组、元组、枚举"><span class="nav-number">1.2.</span> <span class="nav-text">数组、元组、枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Any、Void、Null、Undefined、Never"><span class="nav-number">1.3.</span> <span class="nav-text">Any、Void、Null、Undefined、Never</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型断言"><span class="nav-number">1.4.</span> <span class="nav-text">类型断言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组解构"><span class="nav-number">1.5.</span> <span class="nav-text">数组解构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象解构"><span class="nav-number">1.6.</span> <span class="nav-text">对象解构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数"><span class="nav-number">2.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可选参数和默认参数"><span class="nav-number">2.1.</span> <span class="nav-text">可选参数和默认参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重载"><span class="nav-number">2.2.</span> <span class="nav-text">重载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类"><span class="nav-number">3.</span> <span class="nav-text">类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#寄存器"><span class="nav-number">3.1.</span> <span class="nav-text">寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态属性"><span class="nav-number">3.2.</span> <span class="nav-text">静态属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象类"><span class="nav-number">3.3.</span> <span class="nav-text">抽象类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口"><span class="nav-number">4.</span> <span class="nav-text">接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#额外的属性检查"><span class="nav-number">4.1.</span> <span class="nav-text">额外的属性检查</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">戴也</span>
+
+  
+</div>
+
+<div class="copyright" >
+  <a class="theme-link" href="http://www.miitbeian.gov.cn">
+    京ICP备17047465号-1
+  </a>
+</div>
+
+
+  <div class="powered-by">
+    由<a class="theme-link" href="https://hexo.io">Hexo</a>强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Pisces
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
