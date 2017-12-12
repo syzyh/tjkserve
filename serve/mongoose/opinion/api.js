@@ -3,30 +3,43 @@ const getAllOpinions = require('./controller').getAllOpinions;
 const createOpinion = require('./controller').createOpinion;
 const deleteOpinion = require('./controller').deleteOpinion;
 
+const apiUrl = '/serve/api';
 /**
  * opinion apis
  */
 const opinionAPI = (app) => {
   // create an opinion
-  app.post('/api/opinion/newOpinion', (req, res) => {
-    if(req.user) {
-      createOpinion(req.body).then(
-        (result) => { res.send(result); },
-        (error) => { res.send(error); }
-      );
+  app.post(apiUrl + '/opinion', (req, res) => {
+    console.log(req.body);
+    if (!req.session.user) {
+      res.send({error: '尚未登录'});
     } else {
-      res.send({ authenticated: false });
+      const opinionParams = Object.assign({}, req.body, {user_id: req.session.user._id});
+      createOpinion(opinionParams).then(
+        (result) => { res.send({opinion: result}); },
+        (error) => { res.send({error: '发表评论失败'}); }
+      );
     }
   });
 
+  // toggle favorite to the discussion
+  app.put(apiUrl + '/opinion/toggleFavorite', (req, res) => {
+    const { opinion_id, user_id } = req.body;
+      // TODO: describe the toggle process with comments
+    toggleFavorite(opinion_id, user_id).then(
+      (result) => {
+        res.send({updated: true, opinion: result._doc});
+      },
+      (error) => { res.send({ updated: false }); }
+    );
+  });
+
   // remove an opinion
-  app.delete('/api/opinion/deleteOpinion/:opinion_id', (req, res) => {
-    if(req.user) {
+  app.delete(apiUrl + '/opinion', (req, res) => {
       deleteOpinion(req.params.opinion_id).then(
         (result) => { res.send({ deleted: true }); },
         (error) => { res.send({ deleted: false }); }
       );
-    }
   });
 };
 

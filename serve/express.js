@@ -20,13 +20,15 @@ const expressConfig = (app, serverConfigs) => {
   app.use(cookieParser());
 
   app.use(session({
-    resave: false,
-    saveUninitialized: true,
+    name: 'ant',
+    resave: true,
+    saveUninitialized: false,
     secret: 'secret',
     store: new mongoStore({
       url: serverConfigs.DBURL,
       collection : 'sessions',
     }),
+    cookie: {maxAge: 60000000}
   }));
 
   app.use(flash());

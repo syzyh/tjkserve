@@ -1,7 +1,7 @@
 const path = require('path');
 const multer = require('multer');
 // const upload = multer({ dest: 'public/uploads/'});
-
+const apiUrl = '/serve/api';
 const mediaPath = 'http://localhost:4000/public/uploads/';
 
 const { createMedia, getAllMedia, deleteMediaById, reNameMediaById, swapMediaGroup } = require('./controller');
@@ -9,9 +9,11 @@ const { createMedia, getAllMedia, deleteMediaById, reNameMediaById, swapMediaGro
 const mediaAPI = (app) => {
   const uploadDir = path.resolve('./public/uploads');
 
-  app.post('/api/media/upload', (req, res, next) => {
-    const { groupId, type } = req.body;
+  app.post(apiUrl+'/media/upload', (req, res, next) => {
+    console.log('upload');
+    let { groupId, type } = req.body;
 
+    console.log(type);
     req.file('media').upload({
       dirname: uploadDir,
       maxBytes: 8589934592
@@ -19,6 +21,8 @@ const mediaAPI = (app) => {
     (err, files) => {
       if (err) return res.status(500).send(err);
       console.log(files[0]);
+      if (files[0].type.slice(0,5) === 'image') 
+        type = 'picture';
       const url = mediaPath + files[0].fd.split('/').pop();
       createMedia(groupId, files[0].filename, url, files[0].fd, type, files[0].type).then(
         result => {res.send(result);},
@@ -27,7 +31,7 @@ const mediaAPI = (app) => {
     });
   });
 
-  app.get('/api/media', (req, res) => {
+  app.get(apiUrl+'/media', (req, res) => {
     const { groupId, type } = req.query;
     getAllMedia(groupId, type).then(
       result => {res.send(result);},
@@ -35,7 +39,7 @@ const mediaAPI = (app) => {
     );
   });
 
-  app.delete('/api/media', (req, res) => {
+  app.delete(apiUrl+'/media', (req, res) => {
     const { id } = req.query;
     deleteMediaById(id).then(
       result => {res.send(result);},
@@ -43,7 +47,7 @@ const mediaAPI = (app) => {
     );
   });
 
-  app.put('/api/media', (req, res) => {
+  app.put(apiUrl+'/media', (req, res) => {
     const { id, name, groupId } = req.body;
     if (id && name) {
       reNameMediaById(id, name).then(

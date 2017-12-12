@@ -1,4 +1,4 @@
-const generateDiscussionSlug = require('../../utilities/tools').generateDiscussionSlug;
+const asyncEach = require('async/each');
 const getAllOpinions = require('../opinion/controller').getAllOpinions;
 // const getUser = require('../user/controller').getUser;
 
@@ -11,28 +11,30 @@ const Opinion = require('../opinion/model');
  * @param  {String} discussion_id
  * @return {Promise}
  */
-const getDiscussion = (discussion_slug, discussion_id) => {
+const getDiscussions = (branch_name) => {
   return new Promise((resolve, reject) => {
-    let findObject = {};
-    if (discussion_slug) findObject.discussion_slug = discussion_slug;
-    if (discussion_id) findObject._id = discussion_id;
 
     Discussion
-    .findOne(findObject)
-    .populate('forum')
+    .find({branch_name})
     .populate('user')
     .lean()
-    .exec((error, result) => {
+    .exec((error, discussions) => {
       if (error) { console.log(error); reject(error); }
-      else if (!result) reject(null);
+      else if (!discussions) reject(null);
       else {
+        asyncEach(discussions, (eachDiscussion, callback) => {
         // add opinions to the discussion object
-        getAllOpinions(result._id).then(
-          (opinions) => {
-            result.opinions = opinions;
-            resolve(result);
-          },
-          (error) => { { console.log(error); reject(error); } }
+          getAllOpinions(eachDiscussion._id).then(
+            (opinions) => {
+              eachDiscussion.opinions = opinions;
+              callback();
+            },
+            (error) => { {reject(error); } }
+          )},
+          (error) => {
+            if (error) {console.log(error); reject(error);}
+            else {resolve(discussions)};
+          }
         );
       }
     });
@@ -44,20 +46,16 @@ const getDiscussion = (discussion_slug, discussion_id) => {
  * @param  {Object} discussion
  * @return {Promise}
  */
-const createDiscussion = (discussion) => {
+const createDiscussion = (discussion, user_id) => {
   return new Promise((resolve, reject) => {
     const newDiscussion = new Discussion({
-      forum_id: discussion.forumId,
-      forum: discussion.forumId,
-      user_id: discussion.userId,
-      user: discussion.userId,
-      discussion_slug: generateDiscussionSlug(discussion.title),
-      date: new Date(),
+      branch_name: discussion.branch_name,
+      user: user_id,
+      create_date: new Date(Date.now() + (8 * 60 * 60 * 1000)),
+      modified_data: new Date(Date.now() + (8 * 60 * 60 * 1000)),
       title: discussion.title,
       content: discussion.content,
       favorites: [],
-      tags: discussion.tags,
-      pinned: discussion.pinned,
     });
 
     newDiscussion.save((error) => {
@@ -65,8 +63,8 @@ const createDiscussion = (discussion) => {
         console.log(error);
         reject(error);
       }
-
-      resolve(newDiscussion);
+      newDiscussion._doc.opinions = [];
+      resolve(newDiscussion._doc);
     });
   });
 };
@@ -80,7 +78,7 @@ const createDiscussion = (discussion) => {
 const toggleFavorite = (discussion_id, user_id) => {
   return new Promise((resolve, reject) => {
     Discussion.findById(discussion_id, (error, discussion) => {
-      if (error) { console.log(error); reject(error); }
+      if (error) { reject(error); }
       else if (!discussion) reject(null);
       else {
         // add or remove favorite
@@ -114,17 +112,14 @@ const updateDiscussion = (forum_id, discussion_slug) => {
   // TODO: implement update feature
 };
 
-const deleteDiscussion = (discussion_slug) => {
+const deleteDiscussion = (discussion_id) => {
   return new Promise((resolve, reject) => {
     // find the discussion id first
+    console.log(discussion_id);
     Discussion
-    .findOne({ discussion_slug })
+    .remove({ _id: discussion_id })
     .exec((error, discussion) => {
       if (error) { console.log(error); reject(error); }
-
-      // get the discussion id
-      const discussion_id = discussion._id;
-
       // remove any opinion regarding the discussion
       Opinion
       .remove({ discussion_id })
@@ -133,14 +128,7 @@ const deleteDiscussion = (discussion_slug) => {
 
         // finally remove the discussion
         else {
-          Discussion
-          .remove({ discussion_slug })
-          .exec((error) => {
-            if (error) { console.log(error); reject(error); }
-            else {
-              resolve({ deleted: true });
-            }
-          });
+          resolve({deleted: true});
         }
       });
     });
@@ -148,7 +136,7 @@ const deleteDiscussion = (discussion_slug) => {
 };
 
 module.exports = {
-  getDiscussion,
+  getDiscussions,
   createDiscussion,
   updateDiscussion,
   deleteDiscussion,

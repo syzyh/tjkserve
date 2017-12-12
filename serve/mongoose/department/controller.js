@@ -8,7 +8,7 @@ const deleteDepartment = _id => {
   return Department.remove({_id}).exec();
 };
 
-const createDepartment = (department_name, department_imgUrl) => {
+const createDepartment = (category_id, department_name, department_imgUrl, department_urlName, department_order) => {
   return new Promise((resolve, reject) => {
     Department
     .findOne({ department_name })
@@ -16,11 +16,23 @@ const createDepartment = (department_name, department_imgUrl) => {
       if (error) { console.log(error); reject(error); }
       else if(group) {reject({ alreadyExists: true })}
       else {
-        const newDepartment = new Department({department_name, department_imgUrl});
-        newCategory.save(err => {
-          if (err) {reject({create: false});}
-          else {resolve(Object.assign({}, newCategory, { created: true }));}
-        })
+        const newDepartment = new Department({category_id, department_name, department_imgUrl, department_urlName, department_order});
+        newDepartment.save(err => {
+          if (err) {console.log(err); reject({create: false});}
+          else {resolve(Object.assign({}, newDepartment, { created: true }));}
+        });
+      }
     });
   });
+};
+
+const updateDepartment = (id, department_name, department_imgUrl, department_urlName, department_order) => {
+  return Department.findByIdAndUpdate(id, {department_name, department_imgUrl, department_urlName, department_order}).exec();
+}
+
+module.exports = {
+  getDepartments,
+  deleteDepartment,
+  createDepartment,
+  updateDepartment
 }

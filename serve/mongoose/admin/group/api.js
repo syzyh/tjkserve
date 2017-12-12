@@ -1,7 +1,8 @@
 const { deleteGroup, createGroup, getAllGroups, getAllGroupsByType, reNameGroup } = require('./controller');
+const apiUrl = '/serve/api';
 
 const groupAPI = (app) => {
-  app.get('/api/group', (req, res) => {
+  app.get(apiUrl+'/group', (req, res) => {
     if (req.query.type) {
       getAllGroupsByType(req.query.type).then(
         result => { res.send(result); },
@@ -15,7 +16,7 @@ const groupAPI = (app) => {
     }
   });
 
-  app.post('/api/group', (req, res) => {
+  app.post(apiUrl+'/group', (req, res) => {
     const { name, type } = req.body;
     createGroup(name, type).then(
       result => { res.send(result); },
@@ -23,7 +24,7 @@ const groupAPI = (app) => {
     )
   });
 
-  app.delete('/api/group', (req, res) => {
+  app.delete(apiUrl+'/group', (req, res) => {
     console.log(req.query);
     if (req.query.id) {
       deleteGroup(req.query.id).then(
@@ -33,7 +34,7 @@ const groupAPI = (app) => {
     }
   });
 
-  app.put('/api/group', (req, res) => {
+  app.put(apiUrl+'/group', (req, res) => {
     const { id, name } = req.body;
     if (name && id) {
       reNameGroup(id, name).then(

@@ -4,17 +4,14 @@
 const mongoose = require('mongoose');
 
 const discussionSchema = mongoose.Schema({
-  forum_id: mongoose.Schema.ObjectId,
-  forum: { type: mongoose.Schema.ObjectId, ref: 'forum' },
-  discussion_slug: String,
-  user_id: mongoose.Schema.ObjectId,
-  user: { type: mongoose.Schema.ObjectId, ref: 'user' },
-  date: Date,
+  branch_name: String,
+  user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  created_date: { type: Date, default: Date.now },
+  modified_date: { type: Date, default: Date.now },
   title: String,
-  content: Object,
-  favorites: Array,
-  tags: Array,
-  pinned: Boolean,
+  content: [String],
+  discussion_like: Number,
+  discussion_skim: Number,
 });
 
-module.exports = mongoose.model('discussion', discussionSchema);
+module.exports = mongoose.model('Discussion', discussionSchema);

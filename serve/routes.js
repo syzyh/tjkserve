@@ -3,6 +3,12 @@ const express = require('express');
 
 const mediaAPI = require('./mongoose/admin/media/api');
 const groupAPI = require('./mongoose/admin/group/api');
+const categoryAPI = require('./mongoose/category/api');
+const departmentAPI = require('./mongoose/department/api');
+const userAPI = require('./mongoose/user/api');
+const discussionAPI = require('./mongoose/discussion/api');
+const opinionAPI = require('./mongoose/opinion/api');
+const audioAPI = require('./mongoose/audio/api');
 
 
 const routesConfig = (app) => {
@@ -15,27 +21,31 @@ const routesConfig = (app) => {
   
   groupAPI(app);
 
+  categoryAPI(app);
+
+  departmentAPI(app);
+
+  userAPI(app);
+
+  discussionAPI(app);
+
+  opinionAPI(app);
+
+  audioAPI(app);
+
   const publicPath = path.resolve(__dirname, '../public');
   app.use('/public', express.static(publicPath));
 
-  const blogPath = path.resolve(__dirname, '../public/blog');
-  app.use(express.static(blogPath));
-
-  // app.get('/', (req, res) => {
-  //   res.set('Content-Type', 'text/html');
-  //   res.sendFile(path.resolve(__dirname, '../public/blog', 'index.html'), {headers: {'Content-Type':'text/html'}})
-  // });
-
   app.get('/admin', (req, res) => {
-    console.log('admin');
     res.set('Content-Type', 'text/html');
-    res.sendFile(path.resolve(__dirname, '../public', 'index.html'), {headers: {'Content-Type':'text/html'}})
-  });
+    res.sendFile(path.resolve(__dirname, '../public/admin', 'index.html'), {headers: {'Content-Type':'text/html'}})
+  })
 
-  app.get('/test', (req, res) => {
-    console.log('test')
-    res.sendFile(path.resolve(__dirname, '../public/uploads/test.mp3'))
-  });
+  app.get('*', (req, res) => {
+    res.set('Content-Type', 'text/html');
+    res.sendFile(path.resolve(__dirname, '../public/mobile', 'index.html'), {headers: {'Content-Type':'text/html'}})
+  })
+
 };
 
 module.exports = routesConfig
