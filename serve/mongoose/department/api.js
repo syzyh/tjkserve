@@ -1,9 +1,10 @@
 const { getDepartments, deleteDepartment, createDepartment, updateDepartment } = require('./controller');
-const apiUrl = '/serve/api';
+const {apiUrl} = require('../../../config/serverConfig');
 
 const departmentAPI = (app) => {
   app.get(apiUrl+'/department', (req, res) => {
-    getDepartments().then(
+    const { branch_name } = req.query;
+    getDepartments(branch_name).then(
       result => {res.send(result);},
       err => {res.send(err);}
     )
@@ -18,16 +19,16 @@ const departmentAPI = (app) => {
   });
 
   app.post(apiUrl+'/department', (req, res) => {
-    const { id, name, imgUrl, urlName, order } = req.body;
-    createDepartment(id, name, imgUrl, urlName, order).then(
+    const { id, name, imgUrl, urlName, order, imgUrl2 } = req.body;
+    createDepartment(id, name, imgUrl, urlName, order, imgUrl2).then(
       result => {res.send(result);},
       err => {res.send(err);}
     );
   });
 
   app.put(apiUrl+'/department', (req, res) => {
-    const { id, name, imgUrl, urlName, order } = req.body;
-    updateDepartment(id, name, imgUrl, urlName, order).then(
+    const { id, name, imgUrl, urlName, order, imgUrl2 } = req.body;
+    updateDepartment(id, name, imgUrl, urlName, order, imgUrl2).then(
       result => {res.send({updated: true});},
       err => {res.send(err);}
     );

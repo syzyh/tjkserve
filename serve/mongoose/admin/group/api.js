@@ -1,5 +1,5 @@
 const { deleteGroup, createGroup, getAllGroups, getAllGroupsByType, reNameGroup } = require('./controller');
-const apiUrl = '/serve/api';
+const {apiUrl} = require('../../../../config/serverConfig');
 
 const groupAPI = (app) => {
   app.get(apiUrl+'/group', (req, res) => {

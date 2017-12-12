@@ -1,5 +1,5 @@
 const { getCategory, deleteCategory, createCategory, updateCategory, updateCategorys } = require('./controller');
-const apiUrl = '/serve/api';
+const {apiUrl} = require('../../../config/serverConfig');
 
 const categoryAPI = (app) => {
   app.get(apiUrl+'/category', (req, res) => {

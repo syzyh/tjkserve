@@ -3,7 +3,7 @@ const getAllOpinions = require('./controller').getAllOpinions;
 const createOpinion = require('./controller').createOpinion;
 const deleteOpinion = require('./controller').deleteOpinion;
 
-const apiUrl = '/serve/api';
+const {apiUrl} = require('../../../config/serverConfig');
 /**
  * opinion apis
  */

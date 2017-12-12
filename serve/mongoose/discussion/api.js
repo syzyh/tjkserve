@@ -3,7 +3,7 @@ const getDiscussions = require('./controller').getDiscussions;
 const createDiscussion = require('./controller').createDiscussion;
 const toggleFavorite = require('./controller').toggleFavorite;
 const deleteDiscussion = require('./controller').deleteDiscussion;
-const apiUrl = '/serve/api';
+const {apiUrl} = require('../../../config/serverConfig');
 /**
  * discussion apis
  */

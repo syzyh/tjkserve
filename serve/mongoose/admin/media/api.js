@@ -1,7 +1,7 @@
 const path = require('path');
 const multer = require('multer');
 // const upload = multer({ dest: 'public/uploads/'});
-const apiUrl = '/serve/api';
+const {apiUrl} = require('../../../../config/serverConfig');
 const mediaPath = '/public/uploads/';
 
 const { createMedia, getAllMedia, deleteMediaById, reNameMediaById, swapMediaGroup } = require('./controller');

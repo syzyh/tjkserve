@@ -26,7 +26,7 @@ const deleteAudio = _id => {
   return Audio.remove({_id}).exec();
 };
 
-const createAudio = (department_id, audio_name, audio_description, audio_url, audio_order, type) => {
+const createAudio = (department_id, audio_name, audio_description, audio_url, audio_imgUrl, audio_order, type) => {
   return new Promise((resolve, reject) => {
     const newAudio = new Audio({
       department_id,
@@ -34,6 +34,7 @@ const createAudio = (department_id, audio_name, audio_description, audio_url, au
       audio_name,
       audio_description,
       audio_url,
+      audio_imgUrl,
       audio_order,
       audio_like: 0,
       audio_skim: 0,
@@ -47,8 +48,8 @@ const createAudio = (department_id, audio_name, audio_description, audio_url, au
   });
 };
 
-const updateAudio = (id, audio_name, audio_url, audio_description, audio_order) => {
-  return Audio.findByIdAndUpdate(id, {audio_name, audio_url, audio_description, audio_order}).exec();
+const updateAudio = (id, audio_name, audio_url, audio_imgUrl, audio_description, audio_order) => {
+  return Audio.findByIdAndUpdate(id, {audio_name, audio_url, audio_imgUrl, audio_description, audio_order}).exec();
 };
 
 module.exports = {

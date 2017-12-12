@@ -3,7 +3,7 @@ const getAudios = require('./controller').getAudios;
 const createAudio = require('./controller').createAudio;
 const deleteAudio = require('./controller').deleteAudio;
 const updateAudio = require('./controller').updateAudio;
-const apiUrl = '/serve/api';
+const {apiUrl} = require('../../../config/serverConfig');
 
 /**
  * opinion apis
@@ -20,16 +20,16 @@ const audioAPI = (app) => {
   // create an opinion
   app.post(apiUrl+'/audio', (req, res) => {
     console.log(req.body);
-    const {department_id, name, description,url, order, type} = req.body;
-    createAudio(department_id, name, description,url, order, type).then(
+    const {department_id, name, description,url, imgUrl, order, type} = req.body;
+    createAudio(department_id, name, description,url, imgUrl, order, type).then(
       result => { res.send({audio: result}); },
       error => { res.send({error: '创建音频失败'})}
     )
   });
 
   app.put(apiUrl+'/audio', (req, res) => {
-    const { id, name, url, description, order } = req.body;
-    updateAudio(id, name, url, description, order).then(
+    const { id, name, url, imgUrl, description, order } = req.body;
+    updateAudio(id, name, url, imgUrl, description, order).then(
       result => {res.send({audio: result});},
       err => {res.send({error: '更新音频失败'});}
     );

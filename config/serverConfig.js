@@ -8,7 +8,8 @@ const serverConfigs = {
     key: 'ant',
     maxAge: 2592000000
   },
-  DBURL: 'mongodb://localhost:27017/ant'
+  DBURL: 'mongodb://localhost:27017/ant',
+  apiUrl: '/serve/api'
 }
 
 module.exports = serverConfigs;

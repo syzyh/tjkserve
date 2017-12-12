@@ -9,6 +9,7 @@ const audioSchema = mongoose.Schema({
   audio_like: Number,
   audio_skim: Number,
   audio_order: Number,
+  audio_imgUrl: String,
   created_date: { type: Date, default: Date.now },
 });
 

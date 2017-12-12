@@ -1,7 +1,8 @@
 const { signIn } = require('./controller');
+const {apiUrl} = require('../../../config/serverConfig');
 
 const userAPI = (app) => {
-  app.post('/api/user/signIn', (req, res) => {
+  app.post(apiUrl+'/user/signIn', (req, res) => {
       const {name} = req.body;
       if (name) {
         console.log(name);

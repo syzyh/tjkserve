@@ -12,8 +12,8 @@ const Opinion = require('../opinion/model');
  * @return {Promise}
  */
 const getDiscussions = (branch_name) => {
+  if (branch_name) {
   return new Promise((resolve, reject) => {
-
     Discussion
     .find({branch_name})
     .populate('user')
@@ -39,6 +39,9 @@ const getDiscussions = (branch_name) => {
       }
     });
   });
+  } else {
+    return Discussion.find().populate('user').exec();
+  }
 };
 
 /**

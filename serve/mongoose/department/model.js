@@ -6,6 +6,7 @@ const departmentSchema = mongoose.Schema({
   department_imgUrl: String,
   department_urlName: String,
   department_order: { type: Number, require: true},
+  department_imgUrl2: String,
 });
 
 module.exports = mongoose.model('Department', departmentSchema);
