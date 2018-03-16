@@ -1,29 +1,104 @@
 const _ = require('lodash');
 const asyncEach = require('async/each');
-
 // controllers
-const getAllOpinions = require('../opinion/controller').getAllOpinions;
+const enrichDiscussions = require('../discussion/controller').enrichDiscussions;
 
 // models
 const User = require('./model');
+const Discussion = require('../discussion/model');
+const Audio = require('../audio/model');
+
+const getNewUpdateAudio = (subscriptionList) => {
+  return new Promise((resolve, reject) => {
+    console.log("subscriptionList in query:", subscriptionList);
+    Audio
+    .where('department_id')
+    .in(subscriptionList)
+    .exec((error, result) => {
+      if (error) {
+        console.log("get new update audio error:", error);
+        reject(error);
+      } else {
+        //console.log("get new update audio result:", result);
+        resolve(result);
+      }
+    });
+  });
+}
+
+const getNewUpdateDiscussion = (subscriptionList) => {
+    console.log("subscriptionList in params", subscriptionList);
+    const query = Discussion.where('department_id').in(subscriptionList);
+    return enrichDiscussions(query);
+};
 
 const signIn = (userName, req) => {
-  console.log(userName);
+  console.log("username in signin:",userName);
   return new Promise((resolve, reject) => {
-    User.findOne({userName}, (error, user) => {
+    User
+    .findOne({userName})
+    .lean()
+    .exec((error, user) => {
       if (error) {reject(error);}
       else {
         if (!user) {
-          const user = new User({userName});
-          user.save((error, user) => {
+          const newUser = new User({userName});
+          newUser.save((error, user) => {
             if (error) reject(error);
             else {
               resolve(user);
             };
           });
         } else {
-          resolve(user);
+          console.log("user subscription list:", user.subscriptionList)
+          Promise
+          .all([getNewUpdateAudio(user.subscriptionList), getNewUpdateDiscussion(user.subscriptionList)])
+          .then(
+            result => {
+              user.subscriptionAudios = result[0];
+              user.subscriptionDiscussions = result[1];
+              resolve(user);
+            },
+            error => {reject(error);}
+          );
         }
+      }
+    });
+  });
+};
+
+const userSubscribe = (user_id, department_id) => {
+  console.log("userid and departmentid:", user_id, department_id);
+  return new Promise((resolve, reject) => {
+    User.findById(user_id).exec((error, user) => {
+      if(error) {console.log(error); reject(error);}
+      else if(!user) reject(null);
+      else {
+        const lastLength = user.subscriptionList.length;
+        const newList = _.filter(user.subscriptionList, d => {
+          console.log(d.toString() ,department_id);
+          return d.toString() !== department_id;
+        });
+        if (newList.length === lastLength) newList.push(department_id);
+
+        user.subscriptionList = newList;
+        user.save((error, updatedUser) => {
+          if (error) reject(error);
+          else {
+            const userObject = updatedUser.toObject();
+            Promise
+            .all([getNewUpdateAudio(userObject.subscriptionList), getNewUpdateDiscussion(userObject.subscriptionList)])
+            .then(
+              result => {
+                userObject.subscriptionAudios = result[0];
+                userObject.subscriptionDiscussions = result[1];
+                console.log("userObject:", userObject);
+                resolve(userObject);
+              },
+              error => {reject(error);}
+            );
+          };
+        })
       }
     });
   });
@@ -179,4 +254,5 @@ module.exports = {
   getUser,
   getFullProfile,
   signIn,
+  userSubscribe,
 };

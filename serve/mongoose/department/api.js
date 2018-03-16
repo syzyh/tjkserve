@@ -1,13 +1,20 @@
-const { getDepartments, deleteDepartment, createDepartment, updateDepartment } = require('./controller');
+const { getAllDepartments,getDepartmentByName, deleteDepartment, createDepartment, updateDepartment } = require('./controller');
 const {apiUrl} = require('../../../config/serverConfig');
 
 const departmentAPI = (app) => {
   app.get(apiUrl+'/department', (req, res) => {
     const { branch_name } = req.query;
-    getDepartments(branch_name).then(
-      result => {res.send(result);},
-      err => {res.send(err);}
-    )
+    if (branch_name) {
+      getDepartmentByName(branch_name).then(
+        result => {res.send(result);},
+        err => {res.send(err);}
+      )
+    } else {
+      getAllDepartments().then(
+        result => {res.send(result);},
+        err => {res.send(err);}
+      )
+    }
   });
 
   app.delete(apiUrl+'/department', (req, res) => {

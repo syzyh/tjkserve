@@ -1,8 +1,9 @@
 const asyncEach = require('async/each');
-const getAllOpinions = require('../opinion/controller').getAllOpinions;
+//const getAllOpinions = require('../opinion/controller').getAllOpinions;
 // const getUser = require('../user/controller').getUser;
 
 const Discussion = require('./model');
+const Department = require('../department/model');
 const Opinion = require('../opinion/model');
 
 /**
@@ -11,26 +12,61 @@ const Opinion = require('../opinion/model');
  * @param  {String} discussion_id
  * @return {Promise}
  */
-const getDiscussions = (branch_name) => {
-  if (branch_name) {
+
+const getAllOpinions = (discussion_id) => {
+  const findObject = discussion_id ? {discussion_id, opinion_id: null} : {};
   return new Promise((resolve, reject) => {
-    Discussion
-    .find({branch_name})
+    Opinion
+    .find(findObject)
+    .populate('user')
+    .sort({ date: -1 })
+    .lean()
+    .exec((error, opinions) => {
+      if (error) { console.log(error); reject(error); }
+      else if (!opinions) {
+        reject(null);
+      } else {
+        asyncEach(opinions,
+          (eachOpinion, callback) => {
+            Opinion
+            .find({opinion_id: eachOpinion._id})
+            .populate('user')
+            .sort({ date: 1 })
+            .exec((error, replys) => {
+              eachOpinion.replys = replys;
+              callback();
+            });
+          },
+          (error) => {
+            if (error) {console.log(error); reject(error);}
+            else {resolve(opinions)};
+          }
+        );
+      };
+    });
+  });
+};
+
+const enrichDiscussions = query => {
+  return new Promise((resolve, reject) => {
+    query
     .populate('user')
     .lean()
     .exec((error, discussions) => {
       if (error) { console.log(error); reject(error); }
       else if (!discussions) reject(null);
       else {
-        asyncEach(discussions, (eachDiscussion, callback) => {
+        asyncEach(discussions,
+          (eachDiscussion, callback) => {
         // add opinions to the discussion object
-          getAllOpinions(eachDiscussion._id).then(
-            (opinions) => {
-              eachDiscussion.opinions = opinions;
-              callback();
-            },
-            (error) => { {reject(error); } }
-          )},
+            getAllOpinions(eachDiscussion._id).then(
+              (opinions) => {
+                eachDiscussion.opinions = opinions;
+                callback();
+              },
+              (error) => { {reject(error); } }
+            );
+          },
           (error) => {
             if (error) {console.log(error); reject(error);}
             else {resolve(discussions)};
@@ -39,8 +75,21 @@ const getDiscussions = (branch_name) => {
       }
     });
   });
-  } else {
-    return Discussion.find().populate('user').exec();
+};
+
+// const getDiscussionsByName = (branch_name) => {
+//   if (branch_name) {
+//     const query = Discussion.find({branch_name});
+//     return enrichDiscussions(query);
+//   } else {
+//     return Discussion.find().populate('user').exec();
+//   }
+// };
+
+const getDiscussionById = (id) => {
+  if (id) {
+    const query = Discussion.find({_id: id});
+    return enrichDiscussions(query);
   }
 };
 
@@ -51,23 +100,31 @@ const getDiscussions = (branch_name) => {
  */
 const createDiscussion = (discussion, user_id) => {
   return new Promise((resolve, reject) => {
-    const newDiscussion = new Discussion({
-      branch_name: discussion.branch_name,
-      user: user_id,
-      create_date: new Date(Date.now() + (8 * 60 * 60 * 1000)),
-      modified_data: new Date(Date.now() + (8 * 60 * 60 * 1000)),
-      title: discussion.title,
-      content: discussion.content,
-      favorites: [],
-    });
-
-    newDiscussion.save((error) => {
-      if (error) {
-        console.log(error);
-        reject(error);
-      }
-      newDiscussion._doc.opinions = [];
-      resolve(newDiscussion._doc);
+    console.log("create Discussion:", discussion, user_id);
+    Department
+    .findOne({department_urlName: discussion.branch_name})
+    .exec((error, department) => {
+      const newDiscussion = new Discussion({
+        department_id: department._id,
+        branch_name: discussion.branch_name,
+        user: user_id,
+        create_date: new Date(Date.now() + (8 * 60 * 60 * 1000)),
+        modified_data: new Date(Date.now() + (8 * 60 * 60 * 1000)),
+        title: discussion.title,
+        content: discussion.content,
+        discussion_like:0,
+        discussion_skim:0,
+        favorites: [],
+      });
+  
+      newDiscussion.save((error) => {
+        if (error) {
+          console.log(error);
+          reject(error);
+        }
+        newDiscussion._doc.opinions = [];
+        resolve(newDiscussion._doc);
+      });
     });
   });
 };
@@ -139,9 +196,11 @@ const deleteDiscussion = (discussion_id) => {
 };
 
 module.exports = {
-  getDiscussions,
+  getDiscussionById,
   createDiscussion,
   updateDiscussion,
   deleteDiscussion,
   toggleFavorite,
+  enrichDiscussions,
+  getDiscussionById,
 };

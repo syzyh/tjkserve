@@ -1,25 +1,26 @@
 const Audio = require('./model');
 const Department = require('../department/model');
 
-const getAudios = (branch_name) => {
-  if (branch_name) {
-    console.log(branch_name);
-    return new Promise((resolve, reject) => {
-      Department
-      .findOne({department_urlName: branch_name})
-      .exec((error, department) => {
+
+const getAudioById = id => {
+  return Audio.findById(id).exec();
+}
+
+const getAudiosByName = (branch_name) => {
+  return new Promise((resolve, reject) => {
+    Department
+    .findOne({department_urlName: branch_name})
+    .exec((error, department) => {
+      if (error) reject(error);
+      Audio
+      .find({department_id : department._id})
+      .sort({ audio_order: -1 })
+      .exec((error, audios) => {
         if (error) reject(error);
-        Audio
-        .find({department_id : department._id})
-        .sort({ audio_order: -1 })
-        .exec((error, audios) => {
-          if (error) reject(error);
-          else resolve(audios);
-        })
-      });
-    })
-  }
-  return Audio.find().exec();
+        else resolve(audios);
+      })
+    });
+  })
 };
 
 const deleteAudio = _id => {
@@ -53,7 +54,8 @@ const updateAudio = (id, audio_name, audio_url, audio_imgUrl, audio_description,
 };
 
 module.exports = {
-  getAudios,
+  getAudiosByName,
+  getAudioById,
   deleteAudio,
   createAudio,
   updateAudio

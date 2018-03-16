@@ -28,7 +28,7 @@ const expressConfig = (app, serverConfigs) => {
       url: serverConfigs.DBURL,
       collection : 'sessions',
     }),
-    cookie: {maxAge: 60000000}
+    cookie: {maxAge: 6000000}
   }));
 
   app.use(flash());

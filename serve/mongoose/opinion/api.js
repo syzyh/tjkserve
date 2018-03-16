@@ -1,5 +1,5 @@
 // controllers
-const getAllOpinions = require('./controller').getAllOpinions;
+//const getAllOpinions = require('./controller').getAllOpinions;
 const createOpinion = require('./controller').createOpinion;
 const deleteOpinion = require('./controller').deleteOpinion;
 
@@ -16,7 +16,7 @@ const opinionAPI = (app) => {
     } else {
       const opinionParams = Object.assign({}, req.body, {user_id: req.session.user._id});
       createOpinion(opinionParams).then(
-        (result) => { res.send({opinion: result}); },
+        (result) => { res.send(result); },
         (error) => { res.send({error: '发表评论失败'}); }
       );
     }

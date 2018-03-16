@@ -35,6 +35,7 @@ const routesConfig = (app) => {
 
   const publicPath = path.resolve(__dirname, '../public');
   app.use('/public', express.static(publicPath));
+  app.use('/serve/public', express.static(publicPath));
 
   app.get('/admin', (req, res) => {
     res.set('Content-Type', 'text/html');

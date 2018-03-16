@@ -1,40 +1,10 @@
 const asyncEach = require('async/each');
+//controllers
+const getDiscussionById = require('../discussion/controller').getDiscussionById;
+
 // models
 const Opinion = require('./model');
 const User = require('../user/model');
-
-const getAllOpinions = (discussion_id) => {
-  const findObject = discussion_id ? {discussion_id, opinion_id: null} : {};
-  return new Promise((resolve, reject) => {
-    Opinion
-    .find(findObject)
-    .populate('user')
-    .sort({ date: -1 })
-    .lean()
-    .exec((error, opinions) => {
-      if (error) { console.log(error); reject(error); }
-      else if (!opinions) {
-        reject(null);
-      } else {
-        asyncEach(opinions, (eachOpinion, callback) => {
-          Opinion
-          .find({opinion_id: eachOpinion._id})
-          .populate('user')
-          .sort({ date: 1 })
-          .exec((error, replys) => {
-            eachOpinion.replys = replys;
-            callback();
-            });
-          },
-          (error) => {
-            if (error) {console.log(error); reject(error);}
-            else {resolve(opinions)};
-          }
-        );
-      };
-    });
-  });
-};
 
 const createOpinion = ({ discussion_id, user_id, content, opinion_id, toward_user }) => {
   return new Promise((resolve, reject) => {
@@ -50,7 +20,15 @@ const createOpinion = ({ discussion_id, user_id, content, opinion_id, toward_use
 
     newOpinion.save((error, result) => {
       if (error) { console.log(error); reject(error); }
-      else { resolve(result._doc); }
+      else { 
+        getDiscussionById(discussion_id).then(
+          (result) => { 
+            console.log("create opinion result:", result[0]);
+            resolve(result[0]); 
+          },
+          (error) => { reject(error); }
+        ); 
+      }
     });
   });
 };
@@ -104,7 +82,6 @@ const deleteOpinion = (opinion_id) => {
 };
 
 module.exports = {
-  getAllOpinions,
   createOpinion,
   toggleFavorite,
   updateOpinion,
