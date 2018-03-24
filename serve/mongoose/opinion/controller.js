@@ -12,7 +12,7 @@ const createOpinion = ({ discussion_id, user_id, content, opinion_id, toward_use
       discussion_id,
       user: user_id,
       content,
-      date: new Date(Date.now() + (8 * 60 * 60 * 1000)),
+      date: new Date(Date.now()),
       favorites: [],
       opinion_id,
       toward_user,
