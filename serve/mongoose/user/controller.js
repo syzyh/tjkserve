@@ -33,7 +33,6 @@ const getNewUpdateDiscussion = (subscriptionList) => {
 };
 
 const signIn = (userName, req) => {
-  console.log("username in signin:",userName);
   return new Promise((resolve, reject) => {
     User
     .findOne({userName})
@@ -50,7 +49,7 @@ const signIn = (userName, req) => {
             };
           });
         } else {
-          console.log("user subscription list:", user.subscriptionList)
+          // console.log("user subscription list:", user.subscriptionList)
           Promise
           .all([getNewUpdateAudio(user.subscriptionList), getNewUpdateDiscussion(user.subscriptionList)])
           .then(
@@ -68,7 +67,7 @@ const signIn = (userName, req) => {
 };
 
 const userSubscribe = (user_id, department_id) => {
-  console.log("userid and departmentid:", user_id, department_id);
+  // console.log("userid and departmentid:", user_id, department_id);
   return new Promise((resolve, reject) => {
     User.findById(user_id).exec((error, user) => {
       if(error) {console.log(error); reject(error);}
@@ -76,7 +75,7 @@ const userSubscribe = (user_id, department_id) => {
       else {
         const lastLength = user.subscriptionList.length;
         const newList = _.filter(user.subscriptionList, d => {
-          console.log(d.toString() ,department_id);
+          // console.log(d.toString() ,department_id);
           return d.toString() !== department_id;
         });
         if (newList.length === lastLength) newList.push(department_id);
@@ -92,7 +91,7 @@ const userSubscribe = (user_id, department_id) => {
               result => {
                 userObject.subscriptionAudios = result[0];
                 userObject.subscriptionDiscussions = result[1];
-                console.log("userObject:", userObject);
+                // console.log("userObject:", userObject);
                 resolve(userObject);
               },
               error => {reject(error);}

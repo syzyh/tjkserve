@@ -16,8 +16,8 @@ const getDepartmentByName = (department_urlName) => {
       if (error) { console.log(error); reject(error); }
       else {
         console.log("department finded:", department);
-        const audiosPromise = Audio.find({department_id : department._id}).sort({ audio_order: -1 }).exec();
-        const discussionsPromise = enrichDiscussions(Discussion.find({department_id: department._id}).sort({ date: -1 }));
+        const audiosPromise = Audio.find({department_id : department._id}).limit(50).sort({ audio_order: -1 }).exec();
+        const discussionsPromise = enrichDiscussions(Discussion.find({department_id: department._id}).limit(100).sort({ date: -1 }));
         Promise
         .all([audiosPromise, discussionsPromise])
         .then(

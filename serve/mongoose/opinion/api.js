@@ -2,12 +2,20 @@
 //const getAllOpinions = require('./controller').getAllOpinions;
 const createOpinion = require('./controller').createOpinion;
 const deleteOpinion = require('./controller').deleteOpinion;
+const getAllOpinions = require('./controller').getAllOpinions;
 
 const {apiUrl} = require('../../../config/serverConfig');
 /**
  * opinion apis
  */
 const opinionAPI = (app) => {
+  app.get(apiUrl + '/opinion', (req, res) => {
+    const {toward_user} = req.query;
+    getAllOpinions({toward_user}).then(
+      result => {res.send(result);},
+      error => {res.send({error: '获取评论消息失败'})}
+    )
+  });
   // create an opinion
   app.post(apiUrl + '/opinion', (req, res) => {
     console.log(req.body);
@@ -36,7 +44,8 @@ const opinionAPI = (app) => {
 
   // remove an opinion
   app.delete(apiUrl + '/opinion', (req, res) => {
-      deleteOpinion(req.params.opinion_id).then(
+    console.log("api delete:", req.params);
+      deleteOpinion(req.query.opinion_id).then(
         (result) => { res.send({ deleted: true }); },
         (error) => { res.send({ deleted: false }); }
       );

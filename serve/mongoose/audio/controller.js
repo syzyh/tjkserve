@@ -1,9 +1,25 @@
+const getAllOpinions = require('../opinion/controller').getAllOpinions;
+
 const Audio = require('./model');
 const Department = require('../department/model');
 
 
 const getAudioById = id => {
-  return Audio.findById(id).exec();
+  return new Promise((resolve, reject) => {
+    Audio
+    .findById(id)
+    .exec((error, audio) => {
+      if(error) {reject(error)}
+      else {
+        getAllOpinions({audio_id: audio._id}).then(
+          (opinions) => {
+            resolve({audio, opinions})
+          },
+          (error) => { {reject(error); } }
+        )
+      }
+    });
+  });
 }
 
 const getAudiosByName = (branch_name) => {

@@ -2,19 +2,22 @@
 const createAudio = require('./controller').createAudio;
 const deleteAudio = require('./controller').deleteAudio;
 const updateAudio = require('./controller').updateAudio;
+const getAudioById = require('./controller').getAudioById;
 const {apiUrl} = require('../../../config/serverConfig');
 
 /**
  * opinion apis
  */
 const audioAPI = (app) => {
-  // app.get(apiUrl+'/audio', (req, res) => {
-  //   const { branch_name, id } = req.query;
-  //   getAudios(branch_name, id).then(
-  //     (result) => { res.send(result); },
-  //     (error) => { res.send({error: '获取音频失败'}); }
-  //   );
-  // });
+  app.get(apiUrl+'/audio', (req, res) => {
+    const { branch_name, id } = req.query;
+    if (id) {
+      getAudioById(id).then(
+        (result) => { res.send(result); },
+        (error) => { res.send({error: '获取音频失败'}); }
+      )
+    }
+  });
 
   // create an opinion
   app.post(apiUrl+'/audio', (req, res) => {

@@ -1,5 +1,5 @@
 const asyncEach = require('async/each');
-//const getAllOpinions = require('../opinion/controller').getAllOpinions;
+const getAllOpinions = require('../opinion/controller').getAllOpinions;
 // const getUser = require('../user/controller').getUser;
 
 const Discussion = require('./model');
@@ -13,40 +13,6 @@ const Opinion = require('../opinion/model');
  * @return {Promise}
  */
 
-const getAllOpinions = (discussion_id) => {
-  const findObject = discussion_id ? {discussion_id, opinion_id: null} : {};
-  return new Promise((resolve, reject) => {
-    Opinion
-    .find(findObject)
-    .populate('user')
-    .sort({ date: -1 })
-    .lean()
-    .exec((error, opinions) => {
-      if (error) { console.log(error); reject(error); }
-      else if (!opinions) {
-        reject(null);
-      } else {
-        asyncEach(opinions,
-          (eachOpinion, callback) => {
-            Opinion
-            .find({opinion_id: eachOpinion._id})
-            .populate('user')
-            .sort({ date: 1 })
-            .exec((error, replys) => {
-              eachOpinion.replys = replys;
-              callback();
-            });
-          },
-          (error) => {
-            if (error) {console.log(error); reject(error);}
-            else {resolve(opinions)};
-          }
-        );
-      };
-    });
-  });
-};
-
 const enrichDiscussions = query => {
   return new Promise((resolve, reject) => {
     query
@@ -56,10 +22,11 @@ const enrichDiscussions = query => {
       if (error) { console.log(error); reject(error); }
       else if (!discussions) reject(null);
       else {
+        //console.log("enrich discussions:", discussions);
         asyncEach(discussions,
           (eachDiscussion, callback) => {
         // add opinions to the discussion object
-            getAllOpinions(eachDiscussion._id).then(
+            getAllOpinions({discussion_id: eachDiscussion._id}).then(
               (opinions) => {
                 eachDiscussion.opinions = opinions;
                 callback();
@@ -92,6 +59,11 @@ const getDiscussionById = (id) => {
     return enrichDiscussions(query);
   }
 };
+
+const getDiscussionByUserId = (user) => {
+  const query = Discussion.find({user: user});
+  return enrichDiscussions(query);
+}
 
 /**
  * Create a new discussion
@@ -196,7 +168,7 @@ const deleteDiscussion = (discussion_id) => {
 };
 
 module.exports = {
-  getDiscussionById,
+  getDiscussionByUserId,
   createDiscussion,
   updateDiscussion,
   deleteDiscussion,

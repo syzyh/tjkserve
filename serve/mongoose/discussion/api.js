@@ -1,5 +1,5 @@
 // discussion controllers
-const getDiscussionsByName = require('./controller').getDiscussionsByName;
+const getDiscussionByUserId = require('./controller').getDiscussionByUserId;
 const getDiscussionById = require('./controller').getDiscussionById;
 const createDiscussion = require('./controller').createDiscussion;
 const toggleFavorite = require('./controller').toggleFavorite;
@@ -12,15 +12,15 @@ const {apiUrl} = require('../../../config/serverConfig');
 const discussionAPI = (app) => {
   // get signle discussion
   app.get(apiUrl+'/discussion', (req, res) => {
-    const { branch_name, id } = req.query;
-    if (branch_name) {
-      // console.log(branch_name);
-      // getDiscussionsByName(branch_name).then(
-      //   (result) => { 
-      //     res.send(result); 
-      //   },
-      //   (error) => { res.send(error); }
-      // );
+    const { user_id, id } = req.query;
+    if (user_id) {
+      console.log("get my discussions user_id:", user_id);
+      getDiscussionByUserId(user_id).then(
+        (result) => { 
+          res.send({discussions:result, success: true}); 
+        },
+        (error) => { res.send(error); }
+      );
     } else if (id) {
       console.log(id);
       getDiscussionById(id).then(
