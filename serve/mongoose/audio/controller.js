@@ -22,6 +22,8 @@ const getAudioById = id => {
   });
 }
 
+const getAllAudios = () => Audio.find().exec();
+
 const getAudiosByName = (branch_name) => {
   return new Promise((resolve, reject) => {
     Department
@@ -74,5 +76,6 @@ module.exports = {
   getAudioById,
   deleteAudio,
   createAudio,
-  updateAudio
+  updateAudio,
+  getAllAudios,
 }

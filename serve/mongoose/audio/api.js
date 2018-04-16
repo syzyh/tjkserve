@@ -3,16 +3,23 @@ const createAudio = require('./controller').createAudio;
 const deleteAudio = require('./controller').deleteAudio;
 const updateAudio = require('./controller').updateAudio;
 const getAudioById = require('./controller').getAudioById;
+const getAllAudios = require('./controller').getAllAudios;
 const {apiUrl} = require('../../../config/serverConfig');
 
 /**
  * opinion apis
  */
 const audioAPI = (app) => {
+  console.log('audio:', apiUrl);
   app.get(apiUrl+'/audio', (req, res) => {
     const { branch_name, id } = req.query;
     if (id) {
       getAudioById(id).then(
+        (result) => { res.send(result); },
+        (error) => { res.send({error: '获取音频失败'}); }
+      )
+    } else {
+      getAllAudios().then(
         (result) => { res.send(result); },
         (error) => { res.send({error: '获取音频失败'}); }
       )
