@@ -13,7 +13,6 @@ const userAPI = (app) => {
         console.log(name);
         signIn(name).then(
           result => {
-            //console.log(result);
             req.session.user = result;
             res.send(result)
           },
@@ -21,10 +20,9 @@ const userAPI = (app) => {
         )
       } else {
         console.log(req.session.user);
-        if (req.session.user) {
+        if (req.session.user.userName) {
           signIn(req.session.user.userName).then(
             result => {
-              //console.log(result);
               req.session.user = result;
               res.send(result)
             },
@@ -40,11 +38,11 @@ const userAPI = (app) => {
     let {user_id, department_id} = req.body;
     if (!user_id) user_id = req.session.user.id;
     if (user_id) {
+      console.log('subscribe api:', user_id, department_id);
       userSubscribe(user_id, department_id).then(
         result => {
-          console.log(result);
           req.session.user = result;
-          res.send({success: true, user: result});
+          res.send({success: true, subscriptionList: result});
         },
         error => {
           console.log(error);

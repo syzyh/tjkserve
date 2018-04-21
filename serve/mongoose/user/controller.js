@@ -4,6 +4,7 @@ const asyncEach = require('async/each');
 const enrichDiscussions = require('../discussion/controller').enrichDiscussions;
 
 // models
+const Department = require('../department/model');
 const User = require('./model');
 const Discussion = require('../discussion/model');
 const Audio = require('../audio/model');
@@ -19,7 +20,6 @@ const getNewUpdateAudio = (subscriptionList) => {
         console.log("get new update audio error:", error);
         reject(error);
       } else {
-        //console.log("get new update audio result:", result);
         resolve(result);
       }
     });
@@ -32,10 +32,13 @@ const getNewUpdateDiscussion = (subscriptionList) => {
     return enrichDiscussions(query);
 };
 
-const signIn = (userName, req) => {
+const signIn = (userName) => {
   return new Promise((resolve, reject) => {
+    if(!userName) reject();
+    console.log("user name:", userName);
     User
     .findOne({userName})
+    .populate('subscriptionList')
     .lean()
     .exec((error, user) => {
       if (error) {reject(error);}
@@ -75,8 +78,8 @@ const userSubscribe = (user_id, department_id) => {
       else {
         const lastLength = user.subscriptionList.length;
         const newList = _.filter(user.subscriptionList, d => {
-          // console.log(d.toString() ,department_id);
-          return d.toString() !== department_id;
+          console.log('user subscibe:', d ,department_id);
+          return d.toString() != department_id;
         });
         if (newList.length === lastLength) newList.push(department_id);
 
@@ -84,18 +87,17 @@ const userSubscribe = (user_id, department_id) => {
         user.save((error, updatedUser) => {
           if (error) reject(error);
           else {
-            const userObject = updatedUser.toObject();
-            Promise
-            .all([getNewUpdateAudio(userObject.subscriptionList), getNewUpdateDiscussion(userObject.subscriptionList)])
-            .then(
-              result => {
-                userObject.subscriptionAudios = result[0];
-                userObject.subscriptionDiscussions = result[1];
-                // console.log("userObject:", userObject);
-                resolve(userObject);
-              },
-              error => {reject(error);}
-            );
+            Department
+            .where('_id')
+            .in(updatedUser.subscriptionList)
+            .exec((error, result) => {
+              if (error) {
+                console.log( error);
+                reject(error);
+              } else {
+                resolve(result);
+              }
+            })
           };
         })
       }

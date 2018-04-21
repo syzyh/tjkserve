@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 const discussionSchema = mongoose.Schema({
   branch_name: String,
-  user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  user: { type: mongoose.Schema.ObjectId, ref: 'User', required: true },
   created_date: { type: Date, default: Date.now },
   modified_date: { type: Date, default: Date.now },
   title: String,
