@@ -1,10 +1,43 @@
-const { signIn, userSubscribe } = require('./controller');
+const { signIn, userSubscribe, signUp, signInByOpenid } = require('./controller');
 const {apiUrl} = require('../../../config/serverConfig');
 
 const userAPI = (app) => {
   app.post(apiUrl+'/user/signOut', (req, res) => {
     req.session.user = null;
     res.send({success: true});
+  });
+
+  app.post(apiUrl+'/user/signUp', (req, res) => {
+    const {openid, userName, avatarUrl} = req.body;
+    signUp(openid, userName, avatarUrl).then(
+      result => {
+        req.session.user = result;
+        res.send(result);
+      },
+      error => {
+        res.send(error);
+      }
+    )
+  });
+
+  app.post(apiUrl+'/user/signInByOpenid', (req, res) => {
+    const {openid} = req.body;
+    if (openid) {
+      signInByOpenid(openid).then(
+        result => {
+          req.session.user = result;
+          res.send(result);
+        },
+        error => {
+          console.log("error in sign in by openid:", error);
+          if (error.noUser) {
+            res.send({noUser: true})
+          } else {
+            res.send({fail: true});
+          }
+        }
+      )
+    }
   });
 
   app.post(apiUrl+'/user/signIn', (req, res) => {

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
   //wechatName: String,
+  openid: {type: String, required: true},
   userName: String,
   avatarUrl: {type: String, default: "/serve/public/uploads/index.jpg"},
   role: { type: String, default: 'user' },

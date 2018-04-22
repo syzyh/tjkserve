@@ -32,6 +32,48 @@ const getNewUpdateDiscussion = (subscriptionList) => {
     return enrichDiscussions(query);
 };
 
+const signUp = (openid, userName, avatarUrl) => {
+  return new Promise((resolve, reject) => {
+    console.log("sign up:", openid, userName, avatarUrl);
+    if(!userName || !openid || !avatarUrl ) reject();
+    const newUser = new User({openid, userName, avatarUrl});
+    newUser.save((error, user) => {
+      if (error) reject(error);
+      else {
+        resolve(user);
+      };
+    });
+  });
+};
+
+const signInByOpenid = openid => {
+  return new Promise((resolve, reject) => {
+    console.log("sign in by openid", openid);
+    User
+    .findOne({openid})
+    .populate('subscriptionList')
+    .lean()
+    .exec((error, user) => {
+      if (error) {reject(error);}
+      else {
+        if (!user) {reject({noUser: true})}
+        else {
+          Promise
+          .all([getNewUpdateAudio(user.subscriptionList), getNewUpdateDiscussion(user.subscriptionList)])
+          .then(
+            result => {
+              user.subscriptionAudios = result[0];
+              user.subscriptionDiscussions = result[1];
+              resolve(user);
+            },
+            error => {reject(error);}
+          );
+        }
+      }
+    });
+  });
+};
+
 const signIn = (userName) => {
   return new Promise((resolve, reject) => {
     if(!userName) reject();
@@ -255,5 +297,7 @@ module.exports = {
   getUser,
   getFullProfile,
   signIn,
+  signUp,
+  signInByOpenid,
   userSubscribe,
 };
