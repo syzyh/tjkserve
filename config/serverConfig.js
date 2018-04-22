@@ -9,7 +9,7 @@ const serverConfigs = {
     maxAge: 2592000000
   },
   DBURL: 'mongodb://localhost:27017/ant',
-  apiUrl: '/api',
+  apiUrl: '/serve/api',
   secret: "966a2c45030de77fceae260153cceef6",
 }
 
