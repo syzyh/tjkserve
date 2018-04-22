@@ -53,7 +53,7 @@ const userAPI = (app) => {
         )
       } else {
         console.log(req.session.user);
-        if (req.session.user.userName) {
+        if (req.session.user && req.session.user.user) {
           signIn(req.session.user.userName).then(
             result => {
               req.session.user = result;
