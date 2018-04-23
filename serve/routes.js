@@ -40,7 +40,7 @@ const routesConfig = (app) => {
   const publicTextPath = path.resolve(__dirname, '../public/text');
   app.use('/.*txt$', express.static(publicTextPath));
   app.get("/oauth2", (req, res) => {
-    res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4a7a656e121fa87f&redirect_uri=http%3A%2F%2www.daiye.org&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect');
+    res.redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4a7a656e121fa87f&redirect_uri=http%3A%2F%2Fwww.daiye.org&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect');
   });
 
   app.get('/admin', (req, res) => {
