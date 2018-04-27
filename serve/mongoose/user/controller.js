@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const request = require('request');
 const asyncEach = require('async/each');
 // controllers
 const enrichDiscussions = require('../discussion/controller').enrichDiscussions;
@@ -70,6 +71,42 @@ const signInByOpenid = openid => {
           );
         }
       }
+    });
+  });
+};
+
+const signInByCode = code => {
+  return new Promise((resolve, reject) => {
+    request(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx4a7a656e121fa87f&secret=74edc08d6a9c5a20199262acb61e08e3&code=${code}&grant_type=authorization_code`, (error, res, body) => {
+      if (error) {console.log(error); reject(error)}
+      console.log(body);
+      const {access_token, open_id} = body;
+      signInByOpenid(open_id).then(
+        result => {
+          console.log(result);
+          resolve(result);
+        }, error => {
+          console.log(error);
+          request(` https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${open_id}&lang=zh_CN`, (err, res, body) => {
+            if(err) {
+              console.log(err);
+              reject(err);
+            }
+            console.log(body);
+            const {openid, nickname, headimgurl} = body;
+            signUp(openid, nickname, headimgurl).then(
+              result => {
+                console.log(result);
+                resovle(result);
+              }, 
+              error => {
+                console.log(error);
+                reject(error);
+              }
+            );
+          });
+        }
+      );
     });
   });
 };
@@ -297,7 +334,6 @@ module.exports = {
   getUser,
   getFullProfile,
   signIn,
-  signUp,
-  signInByOpenid,
+  signInByCode,
   userSubscribe,
 };
