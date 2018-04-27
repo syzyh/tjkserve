@@ -79,9 +79,10 @@ const signInByCode = code => {
   return new Promise((resolve, reject) => {
     request(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx4a7a656e121fa87f&secret=74edc08d6a9c5a20199262acb61e08e3&code=${code}&grant_type=authorization_code`, (error, res, body) => {
       if (error) {console.log(error); reject(error)}
-      console.log(body);
-      const {access_token, open_id} = body;
-      signInByOpenid(open_id).then(
+      console.log('sign by code:', body);
+      const {access_token, openid} = body;
+      console.log("openid:", openid);
+      signInByOpenid(openid).then(
         result => {
           console.log(result);
           resolve(result);
