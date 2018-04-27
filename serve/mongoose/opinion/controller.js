@@ -23,7 +23,7 @@ const getAllOpinions = (findObjects) => {
           (eachOpinion, callback) => {
             Opinion
             .find({opinion_id: eachOpinion._id})
-            .limit(30)
+            .limit(50)
             .populate('user')
             .populate('toward_user')
             .sort({ date: 1 })
