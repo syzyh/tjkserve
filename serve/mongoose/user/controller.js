@@ -28,7 +28,7 @@ const getNewUpdateAudio = (subscriptionList) => {
 }
 
 const getNewUpdateDiscussion = (subscriptionList) => {
-    console.log("subscriptionList in params", subscriptionList);
+    //console.log("subscriptionList in params", subscriptionList);
     const query = Discussion.where('department_id').in(subscriptionList);
     return enrichDiscussions(query);
 };
@@ -82,8 +82,11 @@ const signInByCode = code => {
       if (error) {console.log(error); reject(error)}
       console.log('sign by code:', body);
       const {access_token, openid} = body;
+      const newData = JSON.parse(body)
       console.log("openid:", body["openid"]);
       console.log("access_token:", body["access_token"]);
+      console.log("openid:", newData["openid"]);
+      console.log("access_token:", newData["access_token"]);
       signInByOpenid(openid).then(
         result => {
           console.log(result);
