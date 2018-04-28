@@ -81,25 +81,22 @@ const signInByCode = code => {
     request(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx4a7a656e121fa87f&secret=74edc08d6a9c5a20199262acb61e08e3&code=${code}&grant_type=authorization_code`, (error, res, body) => {
       if (error) {console.log(error); reject(error)}
       console.log('sign by code:', body);
-      const {access_token, openid} = body;
       const newData = JSON.parse(body)
-      console.log("openid:", body["openid"]);
-      console.log("access_token:", body["access_token"]);
-      console.log("openid:", newData["openid"]);
-      console.log("access_token:", newData["access_token"]);
+      const {access_token, openid} = newData;
       signInByOpenid(openid).then(
         result => {
           console.log(result);
           resolve(result);
         }, error => {
           console.log(error);
-          request(` https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${open_id}&lang=zh_CN`, (err, res, body) => {
+          request(` https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`, (err, res, body) => {
             if(err) {
               console.log(err);
               reject(err);
             }
             console.log(body);
-            const {openid, nickname, headimgurl} = body;
+            const {openid, nickname, headimgurl} = JSON.parse(body);
+            console.log("user info:", openid, nickname);
             signUp(openid, nickname, headimgurl).then(
               result => {
                 console.log(result);
