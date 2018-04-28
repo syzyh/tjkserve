@@ -82,7 +82,8 @@ const signInByCode = code => {
       if (error) {console.log(error); reject(error)}
       console.log('sign by code:', body);
       const {access_token, openid} = body;
-      console.log("openid:", openid);
+      console.log("openid:", body["openid"]);
+      console.log("access_token:", body["access_token"]);
       signInByOpenid(openid).then(
         result => {
           console.log(result);
