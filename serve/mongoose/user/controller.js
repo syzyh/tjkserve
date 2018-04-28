@@ -29,7 +29,7 @@ const getNewUpdateAudio = (subscriptionList) => {
 
 const getNewUpdateDiscussion = (subscriptionList) => {
     //console.log("subscriptionList in params", subscriptionList);
-    const query = Discussion.where('department_id').in(subscriptionList);
+    const query = Discussion.where('department_id').in(subscriptionList).sort({ modified_date: -1 });
     return enrichDiscussions(query);
 };
 
