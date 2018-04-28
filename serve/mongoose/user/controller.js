@@ -99,7 +99,7 @@ const signInByCode = code => {
             signUp(openid, nickname, headimgurl).then(
               result => {
                 console.log("sign up resovle:", result);
-                resovle(result);
+                resolve(result);
               }, 
               error => {
                 console.log(error);
