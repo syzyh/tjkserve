@@ -35,8 +35,8 @@ const getNewUpdateDiscussion = (subscriptionList) => {
 
 const signUp = (openid, userName, avatarUrl) => {
   return new Promise((resolve, reject) => {
-    console.log("sign up:", openid, userName, avatarUrl);
     if(!userName || !openid || !avatarUrl ) reject();
+    console.log("sign up:", openid, userName, avatarUrl);
     const newUser = new User({openid, userName, avatarUrl});
     newUser.save((error, user) => {
       if (error) reject(error);
@@ -85,7 +85,7 @@ const signInByCode = code => {
       const {access_token, openid} = newData;
       signInByOpenid(openid).then(
         result => {
-          console.log(result);
+          console.log("sign in resovle:", result);
           resolve(result);
         }, error => {
           console.log(error);
@@ -94,12 +94,11 @@ const signInByCode = code => {
               console.log(err);
               reject(err);
             }
-            console.log(body);
             const {openid, nickname, headimgurl} = JSON.parse(body);
             console.log("user info:", openid, nickname);
             signUp(openid, nickname, headimgurl).then(
               result => {
-                console.log(result);
+                console.log("sign up resovle:", result);
                 resovle(result);
               }, 
               error => {
