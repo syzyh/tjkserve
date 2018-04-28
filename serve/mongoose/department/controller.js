@@ -13,11 +13,11 @@ const getDepartmentByName = (department_urlName) => {
     Department
     .findOne({department_urlName})
     .exec((error, department) => {
-      if (error) { console.log(error); reject(error); }
+      if (error || !department) { console.log(error); reject(error); }
       else {
         console.log("department finded:", department);
         const audiosPromise = Audio.find({department_id : department._id}).limit(50).sort({ audio_order: -1 }).exec();
-        const discussionsPromise = enrichDiscussions(Discussion.find({department_id: department._id}).limit(100).sort({ date: 1 }));
+        const discussionsPromise = enrichDiscussions(Discussion.find({department_id: department._id}).limit(100).sort({ modified_date: -1 }));
         Promise
         .all([audiosPromise, discussionsPromise])
         .then(
