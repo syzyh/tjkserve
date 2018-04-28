@@ -12,7 +12,7 @@ const Audio = require('../audio/model');
 
 const getNewUpdateAudio = (subscriptionList) => {
   return new Promise((resolve, reject) => {
-    console.log("subscriptionList in query:", subscriptionList);
+    //console.log("subscriptionList in query:", subscriptionList);
     Audio
     .where('department_id')
     .in(subscriptionList)
@@ -77,6 +77,7 @@ const signInByOpenid = openid => {
 
 const signInByCode = code => {
   return new Promise((resolve, reject) => {
+    console.log("code in begin", code);
     request(`https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx4a7a656e121fa87f&secret=74edc08d6a9c5a20199262acb61e08e3&code=${code}&grant_type=authorization_code`, (error, res, body) => {
       if (error) {console.log(error); reject(error)}
       console.log('sign by code:', body);
