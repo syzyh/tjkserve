@@ -59,6 +59,7 @@ const discussionAPI = (app) => {
       res.send({error: '尚未登录'});
     } else {
       const user_id = req.session.user._id;
+      console.log("session in discussion:",req.session.user);
       if (discussion) {
         createDiscussion(discussion, user_id).then(
           (result) => { res.send(Object.assign({}, {discussion: result})); },
