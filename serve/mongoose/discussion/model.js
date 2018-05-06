@@ -12,7 +12,7 @@ const discussionSchema = mongoose.Schema({
   content: [String],
   discussion_like: Number,
   discussion_skim: Number,
-  department_id: { type: mongoose.Schema.ObjectId, ref: 'Department' },
+  department_id: { type: mongoose.Schema.ObjectId, ref: 'Department',required: true },
 });
 
 module.exports = mongoose.model('Discussion', discussionSchema);

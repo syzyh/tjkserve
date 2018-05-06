@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const opinionSchema = mongoose.Schema({
   discussion_id: { type: mongoose.Schema.ObjectId, ref: 'Discussion' },
   audio_id: { type: mongoose.Schema.ObjectId, ref: 'Audio' },
-  user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  user: { type: mongoose.Schema.ObjectId, ref: 'User',required: true },
   date: Date,
   content: String,
   favorites: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
