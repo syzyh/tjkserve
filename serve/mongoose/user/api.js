@@ -7,6 +7,7 @@ const userAPI = (app) => {
     signInByCode(code).then(
       result => {
         req.session.user = result;
+        console.log("session user:", req.session.user);
         console.log("sign in by code result api:", result);
         res.send(result);
       },
