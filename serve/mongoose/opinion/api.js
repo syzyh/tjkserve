@@ -19,7 +19,7 @@ const opinionAPI = (app) => {
   // create an opinion
   app.post(apiUrl + '/opinion', (req, res) => {
     console.log(req.body);
-    if (!req.session.user) {
+    if (!req.session.user || req.session.user.role === 'baned') {
       res.send({error: '尚未登录'});
     } else {
       const opinionParams = Object.assign({}, req.body, {user_id: req.session.user._id});

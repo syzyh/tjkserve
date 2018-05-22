@@ -55,7 +55,7 @@ const discussionAPI = (app) => {
   // create a new discussion
   app.post(apiUrl+'/discussion', (req, res) => {
     const {discussion} = req.body;
-    if (!req.session.user) {
+    if (!req.session.user || req.session.user.role === 'baned') {
       res.send({error: '尚未登录'});
     } else {
       const user_id = req.session.user._id;

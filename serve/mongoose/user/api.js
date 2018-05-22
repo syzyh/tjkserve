@@ -1,4 +1,4 @@
-const { signIn, userSubscribe, signInByCode } = require('./controller');
+const { signIn, userSubscribe, signInByCode, getUsersByName, changeUserRole } = require('./controller');
 const {apiUrl} = require('../../../config/serverConfig');
 
 const userAPI = (app) => {
@@ -23,6 +23,17 @@ const userAPI = (app) => {
     res.send({success: true});
   });
 
+  app.get(apiUrl+'/user', (req, res) => {
+    const {name} = req.query
+    getUsersByName(name).then(
+      result => {
+        res.send(result);
+      },
+      error => {
+        res.send(error);
+      }
+    )
+  });
 
   app.post(apiUrl+'/user/signIn', (req, res) => {
       const {name} = req.body;
@@ -63,7 +74,21 @@ const userAPI = (app) => {
         },
         error => {
           console.log(error);
-          res.send({success: false})
+          res.send({success: false});
+        }
+      );
+    }
+  });
+
+  app.post(apiUrl+'/user/role', (req, res) => {
+    const {id, role} = req.body;
+    if (!!id && !!role) {
+      changeUserRole(id, role).then(
+        result => {
+          res.send({success: true, user: result});
+        },
+        error => {
+          res.send({success: false});
         }
       );
     }
