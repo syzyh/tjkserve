@@ -57,7 +57,7 @@ const createAudio = (department_id, audio_name, audio_description, audio_url, au
       audio_order,
       audio_like: 0,
       audio_skim: 0,
-      created_date: new Date(Date.now() + (8 * 60 * 60 * 1000)),
+      created_date: new Date(Date.now()),
     })
     console.log(newAudio);
     newAudio.save((err, result) => {

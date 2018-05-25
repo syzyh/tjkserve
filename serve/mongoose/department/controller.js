@@ -38,7 +38,7 @@ const deleteDepartment = _id => {
 const createDepartment = (category_id, department_name, department_imgUrl, department_urlName, department_order, department_imgUrl2) => {
   return new Promise((resolve, reject) => {
     Department
-    .findOne({ department_name })
+    .findOne({ department_urlName })
     .exec((error, group) => {
       if (error) { console.log(error); reject(error); }
       else if(group) {reject({ alreadyExists: true })}
