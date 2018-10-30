@@ -8,7 +8,7 @@ const serverConfigs = {
     key: 'ant',
     maxAge: 2592000000
   },
-  DBURL: 'mongodb://www.daiye.org:27017/ant',
+  DBURL: 'mongodb://antDaiye:ant19950601@www.daiye.org:27017/ant?authSource=admin&authMechanism=SCRAM-SHA-1',
   apiUrl: '/api',
   secret: "966a2c45030de77fceae260153cceef6",
 }
